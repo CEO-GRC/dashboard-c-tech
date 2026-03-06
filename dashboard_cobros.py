@@ -345,6 +345,7 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 [data-testid="stSidebar"] [data-testid="stMultiSelect"]>div,[data-testid="stSidebar"] [data-baseweb="select"]>div{{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:8px!important;box-shadow:none!important}}
 [data-testid="stSidebar"] [data-testid="stMultiSelect"] svg{{fill:rgba(255,255,255,.6)!important}}
 [data-testid="stSidebar"] [data-baseweb="tag"]{{background:rgba(255,255,255,.2)!important;border:1px solid rgba(255,255,255,.3)!important}}
+[data-testid="stFileUploadDropzone"] * {{color: {AMZ_MIDNIGHT} !important;}}
 
 /* ── Dropdown popup (renders at body level, outside sidebar) ── */
 [data-baseweb="popover"] [role="listbox"],[role="listbox"]{{background:{BG1}!important;border:1px solid {BORDER}!important;border-radius:10px!important;box-shadow:0 8px 30px rgba(1,30,106,.18)!important}}
