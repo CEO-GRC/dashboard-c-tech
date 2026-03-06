@@ -24,11 +24,16 @@ st.set_page_config(
 )
 
 # ── SESSION STATE INIT ────────────────────────────────────────────────────────
-if "lang"       not in st.session_state: st.session_state.lang       = "EN"
-if "upload_ts"  not in st.session_state: st.session_state.upload_ts  = None
-if "hist_data"  not in st.session_state: st.session_state.hist_data  = []
-if "dark"       not in st.session_state: st.session_state.dark       = False
-if "auth_ok"    not in st.session_state: st.session_state.auth_ok    = False
+if "lang" not in st.session_state: 
+    st.session_state.lang = "EN"
+if "upload_ts" not in st.session_state: 
+    st.session_state.upload_ts = None
+if "hist_data" not in st.session_state: 
+    st.session_state.hist_data = []
+if "dark" not in st.session_state: 
+    st.session_state.dark = False
+if "auth_ok" not in st.session_state: 
+    st.session_state.auth_ok = False
 
 LANG = st.session_state.lang
 DARK = st.session_state.dark
@@ -50,10 +55,11 @@ if not st.session_state.auth_ok:
     # 1. Inyectamos los estilos para esconder el menú y centrar el login
     st.markdown("""
     <style>
-    #MainMenu{visibility:hidden}footer{visibility:hidden}
-    .stDeployButton{display:none}
-    [data-testid="stSidebar"]{display:none}
-    .block-container{max-width:420px!important;margin:6rem auto!important;padding:0 1rem!important}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
+    [data-testid="stSidebar"] {display: none;}
+    .block-container {max-width: 420px !important; margin: 6rem auto !important; padding: 0 1rem !important;}
     </style>
     """, unsafe_allow_html=True)
 
