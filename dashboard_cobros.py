@@ -42,6 +42,10 @@ import os, hashlib
 def _get_password() -> str:
     try:
         return st.secrets["APP_PASSWORD"]
+    except KeyError:
+        return "ERROR_FALTA_SECRETO"
+    except FileNotFoundError:
+        return "ERROR_FALTA_ARCHIVO"
 
 if not st.session_state.auth_ok:
     # Minimal auth screen — no sidebar, no data
