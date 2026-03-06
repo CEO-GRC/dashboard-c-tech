@@ -75,10 +75,17 @@ if not st.session_state.auth_ok:
             AR Collections Intelligence</div>
     </div>""", unsafe_allow_html=True)
 
-    pwd_input = st.text_input("Access code", type="password",
-                               placeholder="Enter your access code…",
-                               label_visibility="collapsed")
-    login_btn = st.button("→  Enter", use_container_width=True)
+    with st.form("login_form"):
+    pwd_input = st.text_input("Ingresa la contraseña:", type="password")
+    # El botón de submit del formulario detecta automáticamente la tecla Enter
+    submit_button = st.form_submit_button("Entrar")
+    
+    if submit_button:
+        if _check_password(pwd_input.strip()):
+            st.session_state.auth_ok = True
+            st.rerun() # Recarga la página para quitar el login y mostrar el dashboard
+        else:
+            st.error("Contraseña incorrecta. Intenta de nuevo.")
 
     if login_btn or (pwd_input and pwd_input.endswith("\n")):
         if _check_password(pwd_input.strip()):
