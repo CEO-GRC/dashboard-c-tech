@@ -47,8 +47,8 @@ def _check_password(entered: str) -> bool:
 
 # --- PANTALLA DE LOGIN ---
 if not st.session_state.auth_ok:
-    # EL SECRETO ESTÁ AQUÍ: st.markdown SIN LA LETRA 'f'
-    st.markdown("""
+       
+  st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
