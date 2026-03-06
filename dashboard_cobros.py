@@ -58,7 +58,7 @@ if not st.session_state.auth_ok:
     </style>
     """, unsafe_allow_html=True)
 
-    with st.form("login_form"):
+  with st.form("login_form"):
         pwd_input = st.text_input("Ingresa la contraseña:", type="password")
         submit_button = st.form_submit_button("Entrar")
         
