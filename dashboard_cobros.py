@@ -91,7 +91,7 @@ if not st.session_state.auth_ok:
     footer {{visibility:hidden;}}
     .stDeployButton {{display:none;}}
     [data-testid="stSidebar"] {{display:none;}}
-    .block-container {{max-width:420px !important; margin:6rem auto !important; padding:0 1rem !important;}}
+  .block-container {{max-width:420px !important; margin:6rem auto !important; padding:0 1rem !important;}}
     </style>
     """, unsafe_allow_html=True)
 
