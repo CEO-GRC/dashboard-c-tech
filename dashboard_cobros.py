@@ -47,6 +47,9 @@ def _get_password() -> str:
     except FileNotFoundError:
         return "ERROR_FALTA_ARCHIVO"
 
+def _check_password(entered: str) -> bool:
+    return entered.strip() == _get_password()
+
 if not st.session_state.auth_ok:
     # Minimal auth screen — no sidebar, no data
     st.markdown("""
