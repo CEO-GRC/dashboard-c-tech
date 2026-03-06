@@ -34,11 +34,6 @@ LANG = st.session_state.lang
 DARK = st.session_state.dark
 
 # ── PASSWORD GATE ─────────────────────────────────────────────────────────────
-# Password is read from st.secrets["APP_PASSWORD"] (set in Streamlit Cloud →
-# App settings → Secrets as:  APP_PASSWORD = "your_password_here" )
-# Falls back to env variable, then to a hard-coded default for local dev.
-import os, hashlib
-
 def _get_password() -> str:
     try:
         return st.secrets["APP_PASSWORD"]
@@ -50,9 +45,20 @@ def _get_password() -> str:
 def _check_password(entered: str) -> bool:
     return entered.strip() == _get_password()
 
+# --- PANTALLA DE LOGIN ---
 if not st.session_state.auth_ok:
-    # Minimal auth screen — no sidebar, no data
-    st.markdown("""
+    with st.form("login_form"):
+        pwd_input = st.text_input("Ingresa la contraseña:", type="password")
+        submit_button = st.form_submit_button("Entrar")
+        
+        if submit_button:
+            if _check_password(pwd_input):
+                st.session_state.auth_ok = True
+                st.rerun()
+            else:
+                st.error("Contraseña incorrecta. Intenta de nuevo.")
+    st.stop()
+  
     <style>
     #MainMenu{visibility:hidden}footer{visibility:hidden}
     .stDeployButton{display:none}
