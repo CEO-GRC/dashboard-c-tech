@@ -47,6 +47,17 @@ def _check_password(entered: str) -> bool:
 
 # --- PANTALLA DE LOGIN ---
 if not st.session_state.auth_ok:
+    # 1. Inyectamos los estilos para esconder el menú y centrar el login
+    st.markdown("""
+    <style>
+    #MainMenu{visibility:hidden}footer{visibility:hidden}
+    .stDeployButton{display:none}
+    [data-testid="stSidebar"]{display:none}
+    .block-container{max-width:420px!important;margin:6rem auto!important;padding:0 1rem!important}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # 2. Mostramos el formulario (permite dar "Enter")
     with st.form("login_form"):
         pwd_input = st.text_input("Ingresa la contraseña:", type="password")
         submit_button = st.form_submit_button("Entrar")
@@ -57,6 +68,8 @@ if not st.session_state.auth_ok:
                 st.rerun()
             else:
                 st.error("Contraseña incorrecta. Intenta de nuevo.")
+                
+    # 3. Frenamos la ejecución del resto del dashboard si no hay acceso
     st.stop()
   
     <style>
