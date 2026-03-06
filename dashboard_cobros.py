@@ -43,7 +43,7 @@ def _get_password() -> str:
     try:
         return st.secrets["APP_PASSWORD"]
     except Exception:
-        return "CLAVE_NO_CONFIGURADA" # 
+        return "Colus62" # 
 
 def _check_password(entered: str) -> bool:
     return entered.strip() == _get_password()
