@@ -423,12 +423,24 @@ def to_num(val) -> float:
     try:
         if pd.isna(val): return 0.0
     except Exception: pass
-    try: return float(val)
-    except (TypeError, ValueError): pass
-    cleaned = re.sub(r"[^\d.-]", "", str(val))
-    if not cleaned or cleaned in (".", "-", ""): return 0.0
-    try: return float(cleaned)
-    except ValueError: return 0.0
+    
+    if isinstance(val, (int, float)):
+        return float(val)
+        
+    s_val = str(val).strip()
+    
+    # Identificar si es negativo (formatos SAP como '100-', '(100)', o '-100')
+    is_negative = s_val.startswith('-') or s_val.endswith('-') or (s_val.startswith('(') and s_val.endswith(')'))
+    
+    # Extraer solo los números y el punto decimal
+    cleaned = re.sub(r"[^\d.]", "", s_val)
+    if not cleaned or cleaned == ".": return 0.0
+    
+    try: 
+        num = float(cleaned)
+        return -num if is_negative else num
+    except ValueError: 
+        return 0.0
 
 def to_excel_bytes(df: pd.DataFrame) -> bytes:
     buf = BytesIO()
@@ -629,8 +641,8 @@ df = df_raw.copy()
 df[COL_TOTAL] = df[COL_TOTAL].apply(to_num)
 df[COL_CURR]  = df[COL_CURR].apply(to_num)
 for lbl, bcol in BUCKETS.items(): df[bcol] = df[bcol].apply(to_num)
-df["_PD"] = df[list(BUCKETS.values())].clip(lower=0).sum(axis=1) if BUCKETS else (df[COL_TOTAL]-df[COL_CURR]).clip(lower=0)
-for lbl, bcol in BUCKETS.items(): df[f"_B_{lbl}"] = df[bcol].clip(lower=0)
+df["_PD"] = df[list(BUCKETS.values())].sum(axis=1) if BUCKETS else (df[COL_TOTAL]-df[COL_CURR])
+for lbl, bcol in BUCKETS.items(): df[f"_B_{lbl}"] = df[bcol]
 
 # ── FILTERS ───────────────────────────────────────────────────────────────────
 cols_list = sorted(df[COL_COLL].dropna().unique().tolist()) if COL_COLL and COL_COLL in df.columns else []
