@@ -73,17 +73,13 @@ if not st.session_state.auth_ok:
             AR Collections Intelligence</div>
     </div>""", unsafe_allow_html=True)
 
-    pwd_input = st.text_input("Access code", type="password",
-                               placeholder="Enter your access code…",
-                               label_visibility="collapsed")
-    login_btn = st.button("→  Enter", use_container_width=True)
-
-    if login_btn or (pwd_input and pwd_input.endswith("\n")):
-        if _check_password(pwd_input.strip()):
+    pwd = st.text_input(t["auth_pwd"], type="password")
+    if pwd:
+        if _check_password(pwd):
             st.session_state.auth_ok = True
             st.rerun()
         else:
-            st.error("Incorrect access code. Please try again.")
+            st.error(t["auth_err"])
     st.stop()
 
 # ── SESSION MEMORY MANAGEMENT ────────────────────────────────────────────────
