@@ -75,12 +75,12 @@ if not st.session_state.auth_ok:
 
     with st.form("auth_form"):
         pwd = st.text_input(t["auth_pwd"], type="password")
-        if st.form_submit_button(t["auth_btn"]):
-            if _check_password(pwd):
-                st.session_state.auth_ok = True
-                st.rerun()
-            else:
-                st.error(t["auth_err"])
+    if pwd:
+        if _check_password(pwd):
+            st.session_state.auth_ok = True
+            st.rerun()
+        else:
+            st.error(t["auth_err"])
 
 # ── SESSION MEMORY MANAGEMENT ────────────────────────────────────────────────
 SESSION_TIMEOUT_SEC = 30 * 60
