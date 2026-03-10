@@ -1047,7 +1047,6 @@ with tab5:
                     f"{t['hist_add']}</div>", unsafe_allow_html=True)
 
         # amt_pd and n_od captured automatically from current portfolio — not shown in UI
-        amt_val = float(total_pd)
         nod_val = int(n_od)
 
         f1, f2, f3, f4 = st.columns([2, 1.8, 1.8, 1.5], gap="small")
