@@ -75,11 +75,13 @@ if not st.session_state.auth_ok:
 
     with st.form("auth_form"):
         pwd = st.text_input(t["auth_pwd"], type="password")
-    if pwd:
-        if _check_password(pwd):
-            st.session_state.auth_ok = True
+
+     pwd = st.text_input(t["auth_pwd"], type="password")
+         if pwd:
+            if _check_password(pwd):
+                      st.session_state.auth_ok = True
             st.rerun()
-        else:
+      else:
             st.error(t["auth_err"])
 
 # ── SESSION MEMORY MANAGEMENT ────────────────────────────────────────────────
