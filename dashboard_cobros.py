@@ -1050,12 +1050,14 @@ with tab5:
         amt_val = float(total_pd)
         nod_val = int(n_od)
 
-        f1, f2, f3 = st.columns([2.5, 2, 1.5], gap="small")
+        f1, f2, f3, f4 = st.columns([2, 1.8, 1.8, 1.5], gap="small")
         with f1: month_val = st.text_input(t["hist_month"],
                     value=pd.Timestamp.now().strftime("%b %Y"), key="h_month")
         with f2: pct_val   = st.number_input(t["hist_pct_pd"], min_value=0.0, max_value=100.0,
                     value=float(pct_pd), step=0.1, format="%.1f", key="h_pct")
-        with f3:
+        with f3: amt_val   = st.number_input("Total Past Due ($)", min_value=0.0,
+            value=float(total_pd), step=100.0, format="%.2f", key="h_amt")
+        with f4:
             st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
             if st.button(t["hist_save"], use_container_width=True, key="btn_save_hist"):
                 if month_val.strip():
