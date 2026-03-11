@@ -838,22 +838,23 @@ with tab1:
                          use_container_width=True, hide_index=True)
 
 # ── Collector detail table (ALINEADO CON EL WITH DE ARRIBA) ─────────
-             st.markdown(f"<div class='sec-hdr' style='margin-top:1.5rem'><span class='sec-title'>{t['col_det_title']}</span>"
+      
+            st.markdown(f"<div class='sec-hdr' style='margin-top:1.5rem'><span class='sec-title'>{t['col_det_title']}</span>"
                     f"<span class='sec-badge'>{t['dl_ready']}</span></div>", unsafe_allow_html=True)
 
-        dff = df[df[COL_COLL] == sel_c].copy()
+            dff = df[df[COL_COLL] == sel_c].copy()
         
-        if COL_REG and COL_REG in dff.columns:
+            if COL_REG and COL_REG in dff.columns:
             dff = dff[[COL_REG, COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
-        else:
-            dff = dff[[COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
+            else:
+                dff = dff[[COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
 
-        dff.columns = [t.get(f"h_{c}", c) for c in dff.columns]
+            dff.columns = [t.get(f"h_{c}", c) for c in dff.columns]
         
-        st.dataframe(dff.style.format({t.get("h_Total_AR", "Total AR"): fmt, t.get("h_Total_PD", "Past Due"): fmt}),
+            st.dataframe(dff.style.format({t.get("h_Total_AR", "Total AR"): fmt, t.get("h_Total_PD", "Past Due"): fmt}),
                      use_container_width=True, hide_index=True)
 
-        st.download_button(label=t["col_dl"], data=to_excel_bytes(dff),
+            st.download_button(label=t["col_dl"], data=to_excel_bytes(dff),
                            file_name=f"Collector_{sel_c}.xlsx",
                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
