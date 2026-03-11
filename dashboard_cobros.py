@@ -838,7 +838,7 @@ with tab1:
                          use_container_width=True, hide_index=True)
 
 # ── Collector detail table (ALINEADO CON EL WITH DE ARRIBA) ─────────
-  st.markdown(f"<div class='sec-hdr' style='margin-top:1.5rem'><span class='sec-title'>{t['col_det_title']}</span>"
+             st.markdown(f"<div class='sec-hdr' style='margin-top:1.5rem'><span class='sec-title'>{t['col_det_title']}</span>"
                     f"<span class='sec-badge'>{t['dl_ready']}</span></div>", unsafe_allow_html=True)
 
         dff = df[df[COL_COLL] == sel_c].copy()
