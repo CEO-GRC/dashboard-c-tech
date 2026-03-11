@@ -845,7 +845,7 @@ with tab1:
             dff = df[df[COL_COLL] == sel_c].copy()
         
             if COL_REG and COL_REG in dff.columns:
-            dff = dff[[COL_REG, COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
+                dff = dff[[COL_REG, COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
             else:
                 dff = dff[[COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
 
