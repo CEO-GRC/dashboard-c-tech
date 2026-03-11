@@ -775,7 +775,7 @@ with tab1:
     with st.expander("Collector Charts", expanded=True):
             
             st.markdown(f"<div class='sec-hdr' style='margin-top:.5rem'>"
-                        f"<span class='sec-title'>{t['col_treemap']}</span>"
+                        f"<span class='sec-title'>{t['Collector_treemap']}</span>"
                         f"<span class='sec-badge'>DISTRIBUTION</span></div>", unsafe_allow_html=True)
             
             fig_tm = go.Figure(go.Treemap(
