@@ -772,7 +772,7 @@ with tab1:
 # ─────────────────────────────────────────────────────────────────────────────
 # TAB 2 · COLLECTOR VIEW
 # ─────────────────────────────────────────────────────────────────────────────
-        with st.expander(t["col_charts"], expanded=True):
+    with st.expander(t["col_charts"], expanded=True):
             
             st.markdown(f"<div class='sec-hdr' style='margin-top:.5rem'>"
                         f"<span class='sec-title'>{t['col_treemap']}</span>"
