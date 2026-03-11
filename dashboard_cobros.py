@@ -772,21 +772,27 @@ with tab1:
 # ─────────────────────────────────────────────────────────────────────────────
 # TAB 2 · COLLECTOR VIEW
 # ─────────────────────────────────────────────────────────────────────────────
-with tab2:
-    try:
-        st.markdown(f"<div class='sec-hdr'><span class='sec-title'>{t['coll_perf']}</span>"
-                    f"<span class='sec-badge'>{t['sla_mgmt']}</span></div>", unsafe_allow_html=True)
-        if not COL_COLL or COL_COLL not in dff.columns:
-            st.info(t["no_collector"])
-        else:
-            cg = dff.groupby(COL_COLL).agg(
-                Total_AR=(COL_TOTAL,"sum"), Total_PD=("_PD","sum"),
-                Accounts=(COL_TOTAL,"count"), OD_Accts=("_PD", lambda x:(x>0.01).sum()),
-            ).reset_index()
-            cg["Pct_PD"] = cg.apply(lambda r: pct(r["Total_PD"],r["Total_AR"]), axis=1)
-            cg["Avg_OD"] = cg.apply(lambda r: r["Total_PD"]/r["OD_Accts"] if r["OD_Accts"] else 0, axis=1)
-            cg = cg.sort_values("Total_PD", ascending=False)
-          
+        with st.expander(t["col_charts"], expanded=True):
+            
+            st.markdown(f"<div class='sec-hdr' style='margin-top:.5rem'>"
+                        f"<span class='sec-title'>{t['col_treemap']}</span>"
+                        f"<span class='sec-badge'>DISTRIBUTION</span></div>", unsafe_allow_html=True)
+            
+            fig_tm = go.Figure(go.Treemap(
+                labels=cg[COL_COLL], parents=[""] * len(cg), values=cg["Total_AR"],
+                textinfo="label+value+percent parent", hovertemplate="<b>%{label}</b><br>Total: $%{value:,.2f}<extra></extra>",
+                marker=dict(colors=cg["Total_PD"], colorscale=[[0, FILL_SKY], [0.5, S_AMBER], [1, S_RED]], showscale=False)
+            ))
+            fig_tm.update_layout(**THEME, margin=dict(l=0, r=0, t=0, b=0), height=320)
+            st.plotly_chart(fig_tm, use_container_width=True)
+
+            st.markdown("<div style='margin-top:2rem'></div>", unsafe_allow_html=True)
+
+            
+            st.markdown(f"<div class='sec-hdr'>"
+                        f"<span class='sec-title'>{t['ar_by_coll']}</span>"
+                        f"<span class='sec-badge'>CURRENT VS PAST DUE</span></div>", unsafe_allow_html=True)
+            
             fc = go.Figure()
             fc.add_trace(go.Bar(name=t["current"], x=cg[COL_COLL],
                 y=(cg["Total_AR"]-cg["Total_PD"]).clip(lower=0), marker_color=AMZ_SKY, marker_line_width=0,
@@ -795,12 +801,12 @@ with tab2:
                 marker_color=S_RED, marker_line_width=0,
                 hovertemplate="<b>%{x}</b><br>Past Due: $%{y:,.2f}<extra></extra>"))
             fc.update_layout(**THEME, margin=MARGIN_STD, barmode="stack", bargap=0.3,
-                title=dict(text=t["ar_by_coll"], font=dict(size=12,color=T1,weight="bold"), x=0),
-                legend=dict(orientation="h",x=0,y=1.14,font=dict(size=10,color=CHART_FONT),bgcolor="rgba(0,0,0,0)"),
-                xaxis=dict(showgrid=False,zeroline=False,tickfont=dict(size=10,color=CHART_FONT)),
-                yaxis=dict(showgrid=True,gridcolor=CHART_GRID,zeroline=False,tickprefix="$",
-                           tickformat=",.0f",tickfont=dict(size=9,color=CHART_FONT)))
+                legend=dict(orientation="h", x=0, y=1.14, font=dict(size=10, color=CHART_FONT), bgcolor="rgba(0,0,0,0)"),
+                xaxis=dict(showgrid=False, zeroline=False, tickfont=dict(size=10, color=CHART_FONT)),
+                yaxis=dict(showgrid=True, gridcolor=CHART_GRID, zeroline=False, tickprefix="$",
+                           tickformat=",.0f", tickfont=dict(size=9, color=CHART_FONT)))
             st.plotly_chart(fc, use_container_width=True)
+          
             with cc2:
                 bsizes = cg["Total_PD"].apply(
                     lambda v: max(12,min(40,to_num(v)/total_pd*80)) if total_pd else 12).tolist()
