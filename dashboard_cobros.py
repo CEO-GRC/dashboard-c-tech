@@ -837,17 +837,26 @@ with tab1:
                                 t["total_ar"],t["past_due"],t["pct_pd"],t["avg_od"]]],
                          use_container_width=True, hide_index=True)
 
+# ── Collector detail table ──────────────────────────────────────────
+        st.markdown(f"<div class='sec-hdr' style='margin-top:1.5rem'><span class='sec-title'>{t['col_det_title']}</span>"
+                    f"<span class='sec-badge'>{t['dl_ready']}</span></div>", unsafe_allow_html=True)
+
+        dff = df[df[COL_COLL] == sel_c].copy()
+        
+        # Esta es la línea del error, aquí ya va con los espacios correctos:
         if COL_REG and COL_REG in dff.columns:
-            st.markdown(f"<div class='sec-hdr'><span class='sec-title'>{t['regional']}</span>"
-                        f"<span class='sec-badge'>{t['geography']}</span></div>", unsafe_allow_html=True)
-            rg = (dff.groupby(COL_REG).agg(Past_Due=("_PD","sum"),Accounts=(COL_TOTAL,"count"))
-                     .reset_index().sort_values("Past_Due", ascending=True))
-            if not rg.empty:
-                st.plotly_chart(safe_bar_chart(rg[COL_REG].tolist(),
-                    [float(v) for v in rg["Past_Due"].tolist()], orientation="h",
-                    colors=safe_colors(rg["Past_Due"].tolist(),AMZ_SKY,S_YELLOW,S_RED),
-                    title=t["pd_by_region"]), use_container_width=True)
-    except Exception as e: st.error(f"⚠️ Error rendering Collector tab: {e}")
+            dff = dff[[COL_REG, COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
+        else:
+            dff = dff[[COL_ACC, COL_NAME, COL_CURR, COL_TOTAL, COL_PD, "Days_OD"]]
+
+        dff.columns = [t.get(f"h_{c}", c) for c in dff.columns]
+        
+        st.dataframe(dff.style.format({t["h_Total_AR"]: fmt, t["h_Total_PD"]: fmt}),
+                     use_container_width=True, hide_index=True)
+
+        st.download_button(label=t["col_dl"], data=to_excel_bytes(dff),
+                           file_name=f"Collector_{sel_c}_{pd.Timestamp.now().strftime('%Y%m%d')}.xlsx",
+                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
