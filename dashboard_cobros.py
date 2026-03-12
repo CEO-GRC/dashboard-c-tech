@@ -963,7 +963,7 @@ with tab5:
             LOPT   = dict(**THEME, showlegend=False,
                           xaxis=dict(showgrid=False, zeroline=False,
                                      tickfont=dict(size=10, color=CHART_FONT), tickangle=-30),
-                          margin=dict(l=10, r=10, t=88, b=55))
+                          margin=dict(l=10, r=10, t=52, b=55))
 
             # % Past Due trend (wide, full-width)
             st.markdown(f"<div class='sec-hdr' style='margin-top:.5rem'>"
