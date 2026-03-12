@@ -473,53 +473,52 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 }
 
 /* ========== RESPONSIVE: Pantallas pequeñas (<= 768px) ========== */
-@media (max-width: 768px) {
-  [data-testid=="stSidebar"] {
+@media (max-width: 768px) {{
+  [data-testid="stSidebar"] {{
     width: 85vw !important;
     min-width: 240px !important;
     max-width: 320px !important;
-    /* En móvil el sidebar flota sobre el contenido */
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     height: 100vh !important;
     z-index: 9999 !important;
     overflow-y: auto !important;
-  }
+  }}
 
-  [data-testid="stSidebar"] section {
+  [data-testid="stSidebar"] section {{
     padding: 1rem !important;
-  }
+  }}
 
-  /* Botón siempre accesible en móvil */
-  [data-testid="collapsedControl"] {
+  [data-testid="collapsedControl"] {{
     top: 0.4rem !important;
     left: 0.4rem !important;
     z-index: 100000 !important;
     min-width: 2.8rem !important;
     min-height: 2.8rem !important;
-  }
-}
+  }}
+}}
 
 /* ========== RESPONSIVE: Pantallas muy pequeñas (<= 480px) ========== */
-@media (max-width: 480px) {
-  [data-testid="stSidebar"] {
+@media (max-width: 480px) {{
+  [data-testid="stSidebar"] {{
     width: 92vw !important;
     min-width: 220px !important;
-  }
+  }}
 
-  [data-testid="stSidebar"] section {
+  [data-testid="stSidebar"] section {{
     padding: 0.8rem !important;
-  }
-}
+  }}
+}}
 
 /* ========== RESPONSIVE: Pantallas medianas (769px - 1024px) ========== */
-@media (min-width: 769px) and (max-width: 1024px) {
-  [data-testid="stSidebar"] {
+@media (min-width: 769px) and (max-width: 1024px) {{
+  [data-testid="stSidebar"] {{
     width: 280px !important;
     min-width: 260px !important;
-  }
-}
+  }}
+}}
+
 /* ── Dropdown popup (renders at body level, outside sidebar) ── */
 [data-baseweb="popover"] [role="listbox"],[role="listbox"]{{background:{BG1}!important;border:1px solid {BORDER}!important;border-radius:10px!important;box-shadow:0 8px 30px rgba(1,30,106,.18)!important}}
 [role="option"]{{color:{T1}!important;background:{BG1}!important;-webkit-text-fill-color:{T1}!important}}
