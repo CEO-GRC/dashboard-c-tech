@@ -357,20 +357,20 @@ html,body,[class*="css"],.stApp{{font-family:var(--font-sans)!important;backgrou
 header[data-testid="stHeader"]{{background: transparent !important; height: 3rem !important;}}
 .block-container{{padding-top: 4rem !important;}}
 
-/* ── Sidebar ── */
-[data-testid="stSidebar"] {
-  background: {AMZ_MIDNIGHT} !important;
-  border-right: none !important;
-  box-shadow: 4px 0 20px rgba(1,30,106,.22) !important;
-  /* Ancho adaptable según pantalla */
-  width: clamp(260px, 28vw, 340px) !important;
-  min-width: 260px !important;
-  max-width: 340px !important;
-}
+/* — Sidebar — */
+[data-testid="stSidebar"] {{
+    background: {AMZ_MIDNIGHT} !important;
+    border-right: none !important;
+    box-shadow: 4px 0 20px rgba(1,30,106,.22) !important;
+    /* Ancho adaptable según pantalla */
+    width: clamp(260px, 28vw, 340px) !important;
+    min-width: 260px !important;
+    max-width: 340px !important;
+}}
 
-[data-testid="stSidebar"] section {
-  padding: 1.6rem 1.4rem !important;
-}
+[data-testid="stSidebar"] section {{
+    padding: 1.6rem 1.4rem !important;
+}}
 
 [data-testid="stSidebar"] * {
   color: rgba(255,255,255,.75) !important;
