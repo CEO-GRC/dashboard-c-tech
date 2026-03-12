@@ -372,9 +372,9 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
     padding: 1.6rem 1.4rem !important;
 }}
 
-[data-testid="stSidebar"] * {
+[data-testid="stSidebar"] * {{
   color: rgba(255,255,255,.75) !important;
-}
+}}
 
 /* ========== BOTÓN DE COLAPSAR/EXPANDIR ========== */
 /* Siempre visible y bien posicionado */
