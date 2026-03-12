@@ -1220,7 +1220,7 @@ with tab2:
                 st.plotly_chart(fs, use_container_width=True)
 
             st.markdown(f"<div class='sec-hdr' style='margin-bottom: 2.5rem;'><span class='sec-title'>{t['coll_summary']}</span>"
-                        f"<span class='sec-badge'>{t['sla_mgmt']} · 🟢&lt;15% 🟡15-25% 🔴&gt;25%</span></div>",
+                        f"<span class='sec-badge'>{t['sla_mgmt']} · 🟢&lt;20% 🟡21-35% 🔴&gt;35%</span></div>",
                         unsafe_allow_html=True)
 
             # Build styled semaphore table using HTML
