@@ -474,7 +474,7 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 
 /* ========== RESPONSIVE: Pantallas pequeñas (<= 768px) ========== */
 @media (max-width: 768px) {
-  [data-testid="stSidebar"] {
+  [data-testid=="stSidebar"] {
     width: 85vw !important;
     min-width: 240px !important;
     max-width: 320px !important;
