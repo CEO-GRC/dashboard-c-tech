@@ -795,9 +795,9 @@ with tab2:
                 fc.add_trace(go.Bar(name=t["past_due"], x=cg[COL_COLL], y=cg["Total_PD"],
                     marker_color=S_RED, marker_line_width=0,
                     hovertemplate="<b>%{x}</b><br>Past Due: $%{y:,.2f}<extra></extra>"))
-                fc.update_layout(**THEME, margin=MARGIN_STD, barmode="stack", bargap=0.3,
-                    title=dict(text=t["ar_by_coll"], font=dict(size=12,color=T1,weight="bold"), x=0),
-                    legend=dict(orientation="h",x=0,y=1.14,font=dict(size=10,color=CHART_FONT),bgcolor="rgba(0,0,0,0)"),
+                fc.update_layout(**THEME, margin=dict(t=70, b=40, l=10, r=10), barmode="stack", bargap=0.3,
+                    title=dict(text=t["ar_by_coll"], font=dict(size=12,color=T1,weight="bold"), x=0, y=0.97),
+                    legend=dict(orientation="h",x=0,y=1.08,font=dict(size=10,color=CHART_FONT),bgcolor="rgba(0,0,0,0)"),
                     xaxis=dict(showgrid=False,zeroline=False,tickfont=dict(size=10,color=CHART_FONT)),
                     yaxis=dict(showgrid=True,gridcolor=CHART_GRID,zeroline=False,tickprefix="$",
                                tickformat=",.0f",tickfont=dict(size=9,color=CHART_FONT)))
