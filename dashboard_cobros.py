@@ -73,17 +73,28 @@ if not st.session_state.auth_ok:
             AR Collections Intelligence</div>
     </div>""", unsafe_allow_html=True)
 
-    pwd_input = st.text_input("Access code", type="password",
+    def _try_login():
+        if _check_password(st.session_state["_pwd_input"].strip()):
+            st.session_state.auth_ok = True
+        else:
+            st.session_state["_login_error"] = True
+
+     pwd_input = st.text_input("Access code", type="password",
                                placeholder="Enter your access code…",
-                               label_visibility="collapsed")
+                               label_visibility="collapsed",
+                               key="_pwd_input",
+                               on_change=_try_login)
     login_btn = st.button("→  Enter", use_container_width=True)
 
-    if login_btn or (pwd_input and pwd_input.endswith("\n")):
-        if _check_password(pwd_input.strip()):
-            st.session_state.auth_ok = True
-            st.rerun()
-        else:
-            st.error("Incorrect access code. Please try again.")
+    if login_btn:
+        _try_login()
+
+    if st.session_state.auth_ok:
+        st.rerun()
+
+    if st.session_state.get("_login_error"):
+        st.error("Incorrect access code. Please try again.")
+        st.session_state["_login_error"] = False
     st.stop()
 
 # ── SESSION MEMORY MANAGEMENT ────────────────────────────────────────────────
@@ -343,6 +354,9 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 [data-testid="stSidebar"] [data-testid="stMultiSelect"]>div,[data-testid="stSidebar"] [data-baseweb="select"]>div{{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:8px!important;box-shadow:none!important}}
 [data-testid="stSidebar"] [data-testid="stMultiSelect"] svg{{fill:rgba(255,255,255,.6)!important}}
 [data-testid="stSidebar"] [data-baseweb="tag"]{{background:rgba(255,255,255,.2)!important;border:1px solid rgba(255,255,255,.3)!important}}
+[data-testid="stSidebar"] {{width: 320px !important; min-width: 320px !important;}}
+[data-testid="stSidebar"] .stFileUploader {{width: 100% !important;}}
+[data-testid="stSidebar"] .stFileUploader > div {{width: 100% !important; min-width: 0 !important;}}
 
 /* ── Dropdown popup (renders at body level, outside sidebar) ── */
 [data-baseweb="popover"] [role="listbox"],[role="listbox"]{{background:{BG1}!important;border:1px solid {BORDER}!important;border-radius:10px!important;box-shadow:0 8px 30px rgba(1,30,106,.18)!important}}
