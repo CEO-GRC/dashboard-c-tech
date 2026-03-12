@@ -776,6 +776,7 @@ with tab2:
     try:
         st.markdown(f"<div class='sec-hdr'><span class='sec-title'>{t['coll_perf']}</span>"
                     f"<span class='sec-badge'>{t['sla_mgmt']}</span></div>", unsafe_allow_html=True)
+        st.write("")
         if not COL_COLL or COL_COLL not in dff.columns:
             st.info(t["no_collector"])
         else:
