@@ -819,8 +819,8 @@ with tab2:
                                gridcolor=CHART_GRID,zeroline=False,tickfont=dict(size=9),ticksuffix="%"))
                 st.plotly_chart(fs, use_container_width=True)
 
-            st.markdown(f"<div class='sec-hdr' style='margin-top:.4rem'><span class='sec-title'>"
-                        f"{t['coll_summary']}</span><span class='sec-badge'>{t['detail']}</span></div>",
+            st.markdown(f"<div class='sec-hdr' style='margin-bottom: 2.5rem;'><span class='sec-title'>{t['ar_by_coll']}</span>"
+                        f"<span class='sec-badge'>{t['sla_mgmt']}</span></div>",
                         unsafe_allow_html=True)
             disp = cg.copy()
             disp[t["total_ar"]] = disp["Total_AR"].apply(fmt)
