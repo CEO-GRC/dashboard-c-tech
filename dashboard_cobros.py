@@ -79,7 +79,7 @@ if not st.session_state.auth_ok:
         else:
             st.session_state["_login_error"] = True
 
-     pwd_input = st.text_input("Access code", type="password",
+    pwd_input = st.text_input("Access code", type="password",
                                placeholder="Enter your access code…",
                                label_visibility="collapsed",
                                key="_pwd_input",
