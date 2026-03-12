@@ -22,16 +22,6 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from io import BytesIO
-try:
-    from reportlab.lib.pagesizes import letter
-    from reportlab.lib import colors as rl_colors
-    from reportlab.lib.units import inch
-    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, HRFlowable
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.enums import TA_CENTER, TA_RIGHT
-    REPORTLAB_OK = True
-except ImportError:
-    REPORTLAB_OK = False
 
 st.set_page_config(
     page_title="Amrize · AR Collections Intelligence",
@@ -1119,37 +1109,6 @@ with k5:
     st.markdown(kpi_card("sky", t["kpi_days"],
         f"<span style='color:{c5}'>{avg_days:.0f}<span style='font-size:1rem;margin-left:3px'>d</span></span>{_trend_nod}",
         t["weighted"], min(avg_days/180*100, 100), "sky"), unsafe_allow_html=True)
-
-st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-
-# ── PDF Export button (top-level, above tabs) ─────────────────────────────────
-if REPORTLAB_OK:
-    _coll_df_for_pdf = None
-    if COL_COLL and COL_COLL in dff.columns:
-        _cg_pdf = dff.groupby(COL_COLL).agg(
-            Total_AR=(COL_TOTAL,"sum"), Total_PD=("_PD","sum"),
-            Accounts=(COL_TOTAL,"count"), OD_Accts=("_PD", lambda x:(x>0.01).sum()),
-        ).reset_index()
-        _cg_pdf["Pct_PD"] = _cg_pdf.apply(lambda r: pct(r["Total_PD"],r["Total_AR"]), axis=1)
-        _cg_pdf = _cg_pdf.rename(columns={COL_COLL: "Collector"})
-        _coll_df_for_pdf = _cg_pdf
-
-    _pdf_col1, _pdf_col2 = st.columns([1, 6])
-    with _pdf_col1:
-        _pdf_bytes = _generate_executive_pdf(
-            total_ar, total_cur, total_pd, pct_pd, pct_cur,
-            n_total, n_od, avg_od, pd_90p, pct_90p, avg_days,
-            dso_portfolio, bkt, _coll_df_for_pdf, st.session_state.hist_data, LANG
-        )
-        st.download_button(
-            label="📄 Export PDF",
-            data=_pdf_bytes,
-            file_name=f"AR_Executive_Report_{pd.Timestamp.now().strftime('%Y-%m-%d')}.pdf",
-            mime="application/pdf",
-            key="dl_pdf_exec"
-        )
-else:
-    st.caption("💡 Install `reportlab` to enable PDF export: `pip install reportlab`")
 
 st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 
