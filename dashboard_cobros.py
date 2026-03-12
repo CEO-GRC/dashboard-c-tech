@@ -357,6 +357,9 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 [data-testid="stSidebar"] {{width: 320px !important; min-width: 320px !important;}}
 [data-testid="stSidebar"] .stFileUploader {{width: 100% !important;}}
 [data-testid="stSidebar"] .stFileUploader > div {{width: 100% !important; min-width: 0 !important;}}
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{background: transparent !important; border: 2px dashed rgba(255,255,255,0.3) !important;}}
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * {{color: rgba(255,255,255,0.7) !important;}}
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{background: rgba(255,255,255,0.15) !important; border: 1px solid rgba(255,255,255,0.3) !important; color: #fff !important;}}
 
 /* ── Dropdown popup (renders at body level, outside sidebar) ── */
 [data-baseweb="popover"] [role="listbox"],[role="listbox"]{{background:{BG1}!important;border:1px solid {BORDER}!important;border-radius:10px!important;box-shadow:0 8px 30px rgba(1,30,106,.18)!important}}
