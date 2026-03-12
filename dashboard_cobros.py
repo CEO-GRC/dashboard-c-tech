@@ -358,25 +358,168 @@ header[data-testid="stHeader"]{{background: transparent !important; height: 3rem
 .block-container{{padding-top: 4rem !important;}}
 
 /* ── Sidebar ── */
-[data-testid="stSidebar"]{{background:{AMZ_MIDNIGHT}!important;border-right:none!important;box-shadow:4px 0 20px rgba(1,30,106,.22)!important}}
-[data-testid="stSidebar"] section{{padding:1.6rem 1.4rem!important}}
-[data-testid="stSidebar"] *{{color:rgba(255,255,255,.75)!important}}
-[data-testid="collapsedControl"]{{background:{AMZ_NAVY}!important;border:1px solid rgba(255,255,255,.15)!important;color:#fff!important; z-index: 1001 !important; position: fixed !important; top: 0.6rem !important;}}
-[data-testid="stFileUploadDropzone"]{{background:#F0F4FA!important;border:2px dashed #011E6A!important;border-radius:10px!important;padding:1rem!important;}}
-[data-testid="stSidebar"] .stButton>button{{background:rgba(255,255,255,.12)!important;color:#fff!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:7px!important;font-size:.7rem!important;font-weight:600!important}}
-[data-testid="stSidebar"] .stButton>button:hover{{background:rgba(255,255,255,.22)!important}}
-/* Sidebar multiselect */
-[data-testid="stSidebar"] [data-testid="stMultiSelect"] *{{color:rgba(255,255,255,.85)!important;-webkit-text-fill-color:rgba(255,255,255,.85)!important;background:transparent!important;border-color:transparent!important;box-shadow:none!important;outline:none!important}}
-[data-testid="stSidebar"] [data-testid="stMultiSelect"]>div,[data-testid="stSidebar"] [data-baseweb="select"]>div{{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:8px!important;box-shadow:none!important}}
-[data-testid="stSidebar"] [data-testid="stMultiSelect"] svg{{fill:rgba(255,255,255,.6)!important}}
-[data-testid="stSidebar"] [data-baseweb="tag"]{{background:rgba(255,255,255,.2)!important;border:1px solid rgba(255,255,255,.3)!important}}
-[data-testid="stSidebar"] {{width: 320px !important; min-width: 320px !important;}}
-[data-testid="stSidebar"] .stFileUploader {{width: 100% !important;}}
-[data-testid="stSidebar"] .stFileUploader > div {{width: 100% !important; min-width: 0 !important;}}
-[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{background: transparent !important; border: 2px dashed rgba(255,255,255,0.3) !important;}}
-[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * {{color: rgba(255,255,255,0.7) !important;}}
-[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{background: rgba(255,255,255,0.15) !important; border: 1px solid rgba(255,255,255,0.3) !important; color: #fff !important;}}
+[data-testid="stSidebar"] {
+  background: {AMZ_MIDNIGHT} !important;
+  border-right: none !important;
+  box-shadow: 4px 0 20px rgba(1,30,106,.22) !important;
+  /* Ancho adaptable según pantalla */
+  width: clamp(260px, 28vw, 340px) !important;
+  min-width: 260px !important;
+  max-width: 340px !important;
+}
 
+[data-testid="stSidebar"] section {
+  padding: 1.6rem 1.4rem !important;
+}
+
+[data-testid="stSidebar"] * {
+  color: rgba(255,255,255,.75) !important;
+}
+
+/* ========== BOTÓN DE COLAPSAR/EXPANDIR ========== */
+/* Siempre visible y bien posicionado */
+[data-testid="collapsedControl"] {
+  background: {AMZ_NAVY} !important;
+  border: 1px solid rgba(255,255,255,.15) !important;
+  color: #fff !important;
+  z-index: 99999 !important;
+  position: fixed !important;
+  top: 0.6rem !important;
+  left: 0.5rem !important;
+  /* Tamaño mínimo tocable (accesibilidad) */
+  min-width: 2.5rem !important;
+  min-height: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  /* Sombra para destacar sobre el contenido */
+  box-shadow: 0 2px 8px rgba(1,30,106,.35) !important;
+}
+
+/* ========== FILE UPLOADER ========== */
+[data-testid="stFileUploadDropzone"] {
+  background: #F0F4FA !important;
+  border: 2px dashed #011E6A !important;
+  border-radius: 10px !important;
+  padding: 1rem !important;
+}
+
+[data-testid="stSidebar"] .stFileUploader {
+  width: 100% !important;
+}
+
+[data-testid="stSidebar"] .stFileUploader > div {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
+  background: transparent !important;
+  border: 2px dashed rgba(255,255,255,0.3) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {
+  background: rgba(255,255,255,0.15) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  color: #fff !important;
+}
+
+/* ========== BOTONES ========== */
+[data-testid="stSidebar"] .stButton > button {
+  background: rgba(255,255,255,.12) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.25) !important;
+  border-radius: 7px !important;
+  font-size: .7rem !important;
+  font-weight: 600 !important;
+  width: 100% !important;
+}
+
+[data-testid="stSidebar"] .stButton > button:hover {
+  background: rgba(255,255,255,.22) !important;
+}
+
+/* ========== MULTISELECT ========== */
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] * {
+  color: rgba(255,255,255,.85) !important;
+  -webkit-text-fill-color: rgba(255,255,255,.85) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] > div,
+[data-testid="stSidebar"] [data-baseweb="select"] > div {
+  background: rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(255,255,255,.25) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] svg {
+  fill: rgba(255,255,255,.6) !important;
+}
+
+[data-testid="stSidebar"] [data-baseweb="tag"] {
+  background: rgba(255,255,255,.2) !important;
+  border: 1px solid rgba(255,255,255,.3) !important;
+}
+
+/* ========== RESPONSIVE: Pantallas pequeñas (<= 768px) ========== */
+@media (max-width: 768px) {
+  [data-testid="stSidebar"] {
+    width: 85vw !important;
+    min-width: 240px !important;
+    max-width: 320px !important;
+    /* En móvil el sidebar flota sobre el contenido */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    overflow-y: auto !important;
+  }
+
+  [data-testid="stSidebar"] section {
+    padding: 1rem !important;
+  }
+
+  /* Botón siempre accesible en móvil */
+  [data-testid="collapsedControl"] {
+    top: 0.4rem !important;
+    left: 0.4rem !important;
+    z-index: 100000 !important;
+    min-width: 2.8rem !important;
+    min-height: 2.8rem !important;
+  }
+}
+
+/* ========== RESPONSIVE: Pantallas muy pequeñas (<= 480px) ========== */
+@media (max-width: 480px) {
+  [data-testid="stSidebar"] {
+    width: 92vw !important;
+    min-width: 220px !important;
+  }
+
+  [data-testid="stSidebar"] section {
+    padding: 0.8rem !important;
+  }
+}
+
+/* ========== RESPONSIVE: Pantallas medianas (769px - 1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  [data-testid="stSidebar"] {
+    width: 280px !important;
+    min-width: 260px !important;
+  }
+}
 /* ── Dropdown popup (renders at body level, outside sidebar) ── */
 [data-baseweb="popover"] [role="listbox"],[role="listbox"]{{background:{BG1}!important;border:1px solid {BORDER}!important;border-radius:10px!important;box-shadow:0 8px 30px rgba(1,30,106,.18)!important}}
 [role="option"]{{color:{T1}!important;background:{BG1}!important;-webkit-text-fill-color:{T1}!important}}
