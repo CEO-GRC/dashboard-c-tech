@@ -1229,8 +1229,8 @@ with tab2:
                 pv = float(row["Pct_PD"])
                 dot_color, txt_color = semaphore_color(pv)
                 dot_html = f"<span style='display:inline-block;width:10px;height:10px;border-radius:50%;background:{dot_color};margin-right:6px;vertical-align:middle'></span>"
-                if pv < 15:   status_label = "OK"
-                elif pv <= 25: status_label = "WATCH"
+                if pv < 20:   status_label = "OK"
+                elif pv <= 35: status_label = "WATCH"
                 else:          status_label = "ALERT"
                 sem_rows_html += f"""<tr>
                   <td style='padding:8px 12px;border-bottom:1px solid {BORDER}'>{row[COL_COLL]}</td>
