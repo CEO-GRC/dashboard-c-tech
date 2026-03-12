@@ -1259,7 +1259,7 @@ with tab2:
               <tbody>{sem_rows_html}</tbody>
             </table>
             <div style='font-size:.58rem;color:{T3};margin-top:6px;padding-left:4px'>
-              🟢 Verde: &lt;15% past due &nbsp;|&nbsp; 🟡 Amarillo: 15–25% &nbsp;|&nbsp; 🔴 Rojo: &gt;25%
+              🟢 Verde: &lt;20% past due &nbsp;|&nbsp; 🟡 Amarillo: 21–35% &nbsp;|&nbsp; 🔴 Rojo: &gt;35%
             </div>
             """, unsafe_allow_html=True)
 
