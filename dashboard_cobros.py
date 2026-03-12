@@ -729,10 +729,10 @@ def _kpi_trend_badge(hist_data: list, field: str, lower_is_better: bool = True) 
 
 def semaphore_color(pct_pd_val: float) -> tuple[str, str]:
     """Return (dot_color, text_color) for collector traffic-light.
-    🟢 <15%  🟡 15-25%  🔴 >25%"""
+    🟢 <20%  🟡 21-35%  🔴 >35%"""
     v = float(pct_pd_val)
-    if v < 15:   return ("#0D9E6E", "#0D9E6E")  # green
-    if v <= 25:  return ("#C8860A", "#C8860A")  # amber/yellow
+    if v < 20:   return ("#0D9E6E", "#0D9E6E")  # green
+    if v <= 35:  return ("#C8860A", "#C8860A")  # amber/yellow
     return ("#C8373A", "#C8373A")                # red
 
 
@@ -861,8 +861,8 @@ def _generate_executive_pdf(
         ]]
         for _, row in collector_df.iterrows():
             pv = float(row.get("Pct_PD", 0))
-            if pv < 15:   status_txt, st_color = "● GREEN",  green
-            elif pv <= 25: status_txt, st_color = "● YELLOW", amber
+            if pv < 20:    status_txt, st_color = "● GREEN",  green
+            elif pv <= 35: status_txt, st_color = "● YELLOW", amber
             else:          status_txt, st_color = "● RED",    red
             coll_rows.append([
                 Paragraph(str(row.get("Collector", ""))[:22], ParagraphStyle("cv", fontSize=7.5, fontName="Helvetica")),
