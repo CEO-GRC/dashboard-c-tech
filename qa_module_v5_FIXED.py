@@ -208,26 +208,55 @@ def merge_aging_with_activities(df_aging, df_activities, col_payer=None, col_nam
     return merged
 
 
-def get_multi_agent_portfolio(df_merged, df_activities, agent_names):
-    """
-    Filtra cartera por agentes seleccionados.
-    ARREGLADO: Ahora funciona con múltiples agentes en agents_assigned.
-    """
-    if not agent_names or '📊 Todos los agentes' in agent_names:
-        return df_merged.copy()
-    
-    # MÉTODO 1: Filtrar por actividades reales (más confiable)
-    agent_acts = df_activities[df_activities['agent'].isin(agent_names)].copy()
-    
-    # Identificar columna de matching
-    match_col = '_match_customer' if '_match_customer' in agent_acts.columns else '_match_company'
-    
-    if match_col in agent_acts.columns and '_match_key' in df_merged.columns:
-        keys = agent_acts[match_col].unique()
-        filtered = df_merged[df_merged['_match_key'].isin(keys)].copy()
-        
-        if len(filtered) > 0:
-            return filtered
+ef get_multi_agent_portfolio(df_merged, df_activities, agent_names):
+    """
+    Filtra cartera por agentes seleccionados.
+    ARREGLADO: Ahora incluye tanto las cuentas donde el agente tiene actividad,
+    como las cuentas que tiene asignadas originalmente en el Aging.
+    """
+    if not agent_names or ' Todos los agentes' in agent_names:
+        return df_merged.copy()
+    
+    # 1. Obtener llaves de los clientes que el agente SÍ tocó en actividades
+    agent_acts = df_activities[df_activities['agent'].isin(agent_names)].copy()
+    match_col = '_match_customer' if '_match_customer' in agent_acts.columns else '_match_company'
+    
+    keys_touched = []
+    if match_col in agent_acts.columns and '_match_key' in df_merged.columns:
+        keys_touched = agent_acts[match_col].unique().tolist()
+        
+    # 2. Identificar la columna de Collector en el Aging de forma dinámica
+    collector_col = None
+    for col in df_merged.columns:
+        if 'collector' in str(col).lower() or 'cobrador' in str(col).lower():
+            collector_col = col
+            break
+
+    # 3. Evaluar fila por fila (si cumple cualquiera de las 3, es del agente)
+    def row_belongs_to_agent(row):
+        # A) ¿El agente tocó esta cuenta? (Match por llave directa de actividad)
+        if '_match_key' in row.index and row['_match_key'] in keys_touched:
+            return True
+            
+        # B) ¿El agente tocó esta cuenta? (Match por campo concatenado agents_assigned)
+        if 'agents_assigned' in row.index:
+            agents_str = str(row['agents_assigned'])
+            if pd.notna(agents_str) and agents_str not in ['', 'Sin Asignar', 'nan']:
+                row_agents = [a.strip() for a in agents_str.split(',') if a.strip()]
+                if any(ag in row_agents for ag in agent_names):
+                    return True
+                    
+        # C) ¿La cuenta está asignada al agente en el archivo Aging original?
+        if collector_col and collector_col in row.index:
+            val = str(row[collector_col]).strip()
+            if pd.notna(row[collector_col]) and val in agent_names:
+                return True
+                
+        return False
+
+    # Aplicamos el filtro completo
+    filtered = df_merged[df_merged.apply(row_belongs_to_agent, axis=1)].copy()
+    return filtered
     
     # MÉTODO 2: Si no hay matches, intentar por agents_assigned (campo concatenado)
     # Esto maneja casos donde agents_assigned = "Diego Gomez, Juan Perez"
