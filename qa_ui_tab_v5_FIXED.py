@@ -189,21 +189,12 @@ def render_qa_tab(df_aging, col_payer=None, col_name=None, col_collector=None, c
     c1, c2, c3 = st.columns(3)
     
     with c1:
-        agents = sorted(acts['agent'].unique().tolist())
-        st.markdown("**Agentes:**")
-        all_sel = st.checkbox("Seleccionar todos", value=True, key="all_agents_qa")
-        
-        if all_sel:
-            sel_agents = ['📊 Todos los agentes']
-        else:
-            sel_agents = st.multiselect(
-                "Seleccionar agentes:",
-                agents,
-                default=[],
-                label_visibility="collapsed"
-            )
-            if not sel_agents:
-                sel_agents = ['📊 Todos los agentes']
+        # Combinar agentes que están en el Aging + los que están en Actividades
+        ag_acts = acts['agent'].unique().tolist()
+        ag_aging = merged[col_collector].dropna().unique().tolist() if col_collector and col_collector in merged.columns else []
+        agents = sorted(list(set(ag_acts + ag_aging)))
+        
+        st.markdown("**Agentes:**")
     
     with c2:
         top = st.selectbox("Top clientes:", [5, 10, 20, 50, 100], index=1, key="top_qa")
