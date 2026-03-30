@@ -24,7 +24,7 @@ import plotly.graph_objects as go
 from io import BytesIO
 
 # QA Module v4 FINAL
-from qa_ui_tab_v4 import render_qa_tab
+from qa_ui_tab_v2_Fixed import render_qa_tab
 
 st.set_page_config(
     page_title="Amrize · AR Collections Intelligence",
