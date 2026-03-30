@@ -67,9 +67,22 @@ def merge_aging_with_activities(df_aging, df_activities):
     if best_match['score'] == 0:
         raise ValueError("No se encontraron datos en común para cruzar los archivos.")
 
-    # Renombrar para que las funciones de abajo no se pierdan
+    # === EL FIX ANTIBALAS (CHAO ERROR 1-DIMENSIONAL) ===
+    # Si ya existe una columna 'customer_clean' y no fue la ganadora, la borramos
+    # para que al renombrar no queden dos columnas con el mismo nombre.
+    if 'customer_clean' in aging.columns and best_match['aging_col'] != 'customer_clean':
+        aging = aging.drop(columns=['customer_clean'])
+    if 'customer_clean' in acts.columns and best_match['acts_col'] != 'customer_clean':
+        acts = acts.drop(columns=['customer_clean'])
+
+    # Renombramos la ganadora a nuestro estándar
     aging = aging.rename(columns={best_match['aging_col']: 'customer_clean'})
     acts = acts.rename(columns={best_match['acts_col']: 'customer_clean'})
+    
+    # Por si acaso, eliminar cualquier otra columna duplicada de raíz
+    aging = aging.loc[:, ~aging.columns.duplicated()].copy()
+    acts = acts.loc[:, ~acts.columns.duplicated()].copy()
+    # ====================================================
     
     # Asegurar columna 'company' para el UI v4
     if 'company' not in aging.columns:
