@@ -1,6 +1,6 @@
 """
-QA Module v4.1 - SANEADO Y ROBUSTO
-Cruce por contenido habilitado para que no se rompa en la línea 27.
+QA Module v4.2 - DEFINITIVO
+Corrección de N/A en agentes y restauración de columna 'was_touched'
 """
 import pandas as pd
 import numpy as np
@@ -10,7 +10,6 @@ import re
 
 def clean_activities_file(df_raw):
     """Limpia el archivo de actividades detectando headers y fechas de forma inteligente."""
-    # 1. Buscar el header de forma flexible (Ya no se rompe si no encuentra 'User')
     header_row = 0
     for idx in range(min(15, len(df_raw))):
         row_str = ' '.join([str(v) for v in df_raw.iloc[idx].values if pd.notna(v)]).lower()
@@ -22,7 +21,6 @@ def clean_activities_file(df_raw):
     df.columns = df_raw.iloc[header_row]
     df = df.reset_index(drop=True)
     
-    # 2. Mapeo de columnas para que el UI v4 encuentre lo que busca
     new_cols = {}
     for col in df.columns:
         c = str(col).lower().strip()
@@ -33,15 +31,20 @@ def clean_activities_file(df_raw):
     
     df = df.rename(columns=new_cols)
     
-    # Validaciones mínimas para que el dashboard no explote
-    if 'agent' not in df.columns: df['agent'] = 'Sin Agente'
+    if 'agent' not in df.columns: 
+        df['agent'] = 'Sin Agente'
     if 'customer_number' not in df.columns: 
-        # Si no hay columna de cliente, buscamos la que más se parezca
         df = df.rename(columns={df.columns[0]: 'customer_number'})
 
-    # Limpieza de fechas robusta (tomada de la v2_fixed)
     df['date'] = pd.to_datetime(df['date'], errors='coerce')
     df = df.dropna(subset=['date'])
+    
+    # === ANIKIILACIÓN DE LOS N/A EN LOS AGENTES ===
+    df['agent'] = df['agent'].astype(str).str.strip()
+    df['agent'] = df['agent'].replace(
+        {r'(?i)^nan$': 'Sin Agente', r'(?i)^n/a$': 'Sin Agente', '^$': 'Sin Agente', 'None': 'Sin Agente'}, 
+        regex=True
+    )
     
     df['customer_clean'] = df['customer_number'].astype(str).str.strip().str.lower()
     df['history'] = df['history'].fillna('N/A').astype(str)
@@ -53,7 +56,6 @@ def merge_aging_with_activities(df_aging, df_activities):
     aging = df_aging.copy()
     acts = df_activities.copy()
     
-    # Búsqueda de coincidencia por contenido (Smart Match)
     best_match = {'aging_col': None, 'acts_col': None, 'score': 0}
     
     for c_age in aging.columns:
@@ -67,33 +69,26 @@ def merge_aging_with_activities(df_aging, df_activities):
     if best_match['score'] == 0:
         raise ValueError("No se encontraron datos en común para cruzar los archivos.")
 
-    # === EL FIX ANTIBALAS (CHAO ERROR 1-DIMENSIONAL) ===
-    # Si ya existe una columna 'customer_clean' y no fue la ganadora, la borramos
-    # para que al renombrar no queden dos columnas con el mismo nombre.
+    # Fix Anti-Dimensional Errors
     if 'customer_clean' in aging.columns and best_match['aging_col'] != 'customer_clean':
         aging = aging.drop(columns=['customer_clean'])
     if 'customer_clean' in acts.columns and best_match['acts_col'] != 'customer_clean':
         acts = acts.drop(columns=['customer_clean'])
 
-    # Renombramos la ganadora a nuestro estándar
     aging = aging.rename(columns={best_match['aging_col']: 'customer_clean'})
     acts = acts.rename(columns={best_match['acts_col']: 'customer_clean'})
     
-    # Por si acaso, eliminar cualquier otra columna duplicada de raíz
     aging = aging.loc[:, ~aging.columns.duplicated()].copy()
     acts = acts.loc[:, ~acts.columns.duplicated()].copy()
-    # ====================================================
     
-    # Asegurar columna 'company' para el UI v4
     if 'company' not in aging.columns:
         for c in aging.columns:
             if 'name' in str(c).lower() or 'nombre' in str(c).lower():
                 aging = aging.rename(columns={c: 'company'})
                 break
 
-    # Resumen de actividades
     agg = acts.groupby('customer_clean').agg({
-        'agent': lambda x: ', '.join(sorted(set(x))),
+        'agent': lambda x: ', '.join(sorted(set([a for a in x if a != 'Sin Agente']))),
         'date': ['max', 'count'],
         'history': lambda x: ' || '.join([str(h)[:200] for h in list(x)[:5]])
     }).reset_index()
@@ -102,23 +97,29 @@ def merge_aging_with_activities(df_aging, df_activities):
     
     merged = aging.merge(agg, on='customer_clean', how='left')
     
-    # Cálculos finales
     today = pd.Timestamp.now()
     merged['days_since_activity'] = merged['last_activity_date'].apply(
         lambda x: (today - x).days if pd.notna(x) else 999
     )
+    
+    # === RESTAURACIÓN DEL was_touched (CHAO ERROR DE RENDERIZADO) ===
     merged['total_activities'] = merged['total_activities'].fillna(0).astype(int)
-    merged['activity_status'] = merged['total_activities'].apply(
-        lambda x: '✅ Con Actividad' if x > 0 else '⚠️ Sin Actividad'
+    merged['was_touched'] = merged['total_activities'] > 0  
+    
+    merged['activity_status'] = merged['was_touched'].apply(
+        lambda x: '✅ Con Actividad' if x else '⚠️ Sin Actividad'
     )
     
-    # Guardamos la llave para el filtro de agentes
+    # Limpiar campos vacíos del cruce
+    merged['agents_assigned'] = merged['agents_assigned'].replace({'': 'Sin Asignar'})
+    merged['agents_assigned'] = merged['agents_assigned'].fillna('Sin Asignar')
+    
     merged['_match_key'] = 'customer_clean'
     
     return merged
 
 def get_multi_agent_portfolio(df_merged, df_activities, agent_names):
-    """Filtra por múltiples agentes (Compatible con UI v4)."""
+    """Filtra por múltiples agentes."""
     if not agent_names or '📊 Todos los agentes' in agent_names:
         return df_merged.copy()
     
@@ -131,10 +132,8 @@ def export_qa_report(df_data, qa_comments_dict, filename_prefix="QA"):
     output = BytesIO()
     df_export = df_data.copy()
     
-    # Limpiar nombres de columnas para Excel
     df_export.columns = [re.sub(r'[^a-zA-Z0-9_ ]', '', str(c))[:100] for c in df_export.columns]
     
-    # Buscar llave para comentarios
     key_col = 'customer_clean' if 'customer_clean' in df_export.columns else df_export.columns[0]
     df_export['QA_Comment'] = df_export[key_col].map(qa_comments_dict).fillna('')
     
