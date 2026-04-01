@@ -3,7 +3,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from qa_module_v7 import (
+from qa_module_v6 import (
     clean_activities_file,
     merge_aging_with_activities,
     get_multi_agent_portfolio,
