@@ -84,10 +84,10 @@ class MergeEngine:
         
         for col in df.columns:
             c_lower = str(col).lower()
-            # ✅ FIXED: Acepta "Customer", "Customer Number", "Customer #", etc.
             if 'customer' in c_lower or 'cuenta' in c_lower or 'client' in c_lower:
-                cols['customer_number'] = col
-                break
+                if 'number' in c_lower or 'num' in c_lower or 'id' in c_lower:
+                    cols['customer_number'] = col
+                    break
         
         for col in df.columns:
             c_lower = str(col).lower()
@@ -425,52 +425,14 @@ def clean_activities_file(df_raw):
             new_cols[col] = 'agent'
         elif 'date' in c or 'fecha' in c:
             new_cols[col] = 'date'
-        # ✅ PRIORIDAD 1: Detectar Customer Number primero
-        elif ('customer' in c or 'cuenta' in c or 'client' in c) and ('number' in c or 'num' in c or '#' in c or c == 'customer'):
+        elif 'customer' in c or 'cuenta' in c or 'client' in c or 'numero' in c:
             new_cols[col] = 'customer_number'
+        elif 'company' in c or 'nombre' in c or 'razon' in c or 'name' in c:
+            new_cols[col] = 'company_name'
         elif 'history' in c or 'comentario' in c or 'comment' in c or 'note' in c:
             new_cols[col] = 'history'
     
-    # ✅ SEGUNDA PASADA: Detectar Company solo si no confunde con Customer
-    for col in df.columns:
-        if col in new_cols:  # Ya fue asignada
-            continue
-        c = str(col).lower().strip()
-        if 'company' in c or 'nombre' in c or 'razon' in c or 'name' in c:
-            new_cols[col] = 'company_name'
-            break
-    
     df = df.rename(columns=new_cols)
-    
-    # 🔍 DEBUG: Mostrar qué columnas detectó
-    print("=" * 60)
-    print("🔍 DETECCIÓN DE COLUMNAS EN ACTIVIDADES:")
-    if 'agent' in df.columns:
-        print(f"  ✅ Agent: OK")
-    else:
-        print(f"  ❌ Agent: NO DETECTADO")
-    
-    if 'date' in df.columns:
-        print(f"  ✅ Date: OK")
-    else:
-        print(f"  ❌ Date: NO DETECTADO")
-    
-    if 'customer_number' in df.columns:
-        print(f"  ✅ Customer Number: OK (valores ejemplo: {df['customer_number'].head(3).tolist()})")
-    else:
-        print(f"  ❌ Customer Number: NO DETECTADO")
-    
-    if 'company_name' in df.columns:
-        print(f"  ✅ Company Name: OK")
-    else:
-        print(f"  ❌ Company Name: NO DETECTADO")
-    
-    if 'history' in df.columns:
-        print(f"  ✅ History: OK")
-    else:
-        print(f"  ❌ History: NO DETECTADO")
-    print("=" * 60)
-
     
     if 'agent' not in df.columns:
         df['agent'] = 'Sin Agente'
