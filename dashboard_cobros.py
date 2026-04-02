@@ -1374,30 +1374,4 @@ with tab4:
         """)
 
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 5 · PRODUCTIVITY
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-with tab5:
-    # Detectar columnas
-    col_payer = None
-    col_name = None  
-    col_collector = None
-    col_total = None
-    
-    for col in df.columns:
-        if 'payer' in str(col).lower() and 'name' not in str(col).lower():
-            col_payer = col
-        elif 'name' in str(col).lower() or 'company' in str(col).lower():
-            col_name = col
-        elif 'collector' in str(col).lower():
-            col_collector = col
-        elif 'total' in str(col).lower() and 'ar' in str(col).lower():
-            col_total = col
-    
-    render_productivity_tab(
-        df_merged=st.session_state.get('qa_merged'),
-        df_payments=st.session_state.get('payments_data'),
-        col_collector=col_collector,
-        col_total=col_total
-    )
