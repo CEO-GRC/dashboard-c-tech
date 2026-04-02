@@ -107,7 +107,7 @@ if not st.session_state.auth_ok:
     st.stop()
 
 # ── SESSION MEMORY MANAGEMENT ────────────────────────────────────────────────
-SESSION_TIMEOUT_SEC = 30 * 60
+SESSION_TIMEOUT_SEC = 30 * 90
 
 def _clear_session_data():
     for key in ["upload_ts", "_df_raw", "_df_hash", "_purge_timer"]:
