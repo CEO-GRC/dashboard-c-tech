@@ -1118,8 +1118,8 @@ st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 # ══════════════════════════════════════════════════════════════════════════════
 # TABS
 # ══════════════════════════════════════════════════════════════════════════════
-tab1, tab2, tab3, tab4, tab6 = st.tabs([
-    t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab6"],
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"],
 ])
 
 
@@ -1374,29 +1374,7 @@ with tab4:
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 5 · PAYMENTS ANALYSIS
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-with tab5:
-    try:
-        # Pasar el archivo original y el total AR
-        render_payments_tab(
-            uploaded_file=uploaded_file,
-            total_ar=total_ar
-        )
-        
-    except Exception as e:
-        st.error(f"⚠️ Error rendering Payments tab: {e}")
-        st.info("""
-        **Troubleshooting:**
-        - Ensure the uploaded file has a 'Sheet3' tab
-        - Sheet3 should contain: 'Row Labels' and 'Sum of Amount in local currency'
-        - Check that payments_module.py and payments_tab.py are in the same directory
-        """)
-
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 6 · PRODUCTIVITY
+# TAB 5 · PRODUCTIVITY
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 with tab6:
