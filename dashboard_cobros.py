@@ -1423,6 +1423,3 @@ with tab6:
         col_collector=col_collector,
         col_total=col_total
     )
-```
-
----
