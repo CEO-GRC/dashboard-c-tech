@@ -20,7 +20,8 @@ import plotly.graph_objects as go
 from io import BytesIO
 
 # QA Module v6 - FIXED
-from qa_ui_tab_v6 import render_qa_tab
+from qa_ui_tab_v7 import render_qa_tab
+from productivity_tab import render_productivity_tab
 
 # Payments Module v1 - NEW
 from payments_tab import render_payments_tab
@@ -1117,7 +1118,10 @@ st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 # ══════════════════════════════════════════════════════════════════════════════
 # TABS
 # ══════════════════════════════════════════════════════════════════════════════
-tab1, tab2, tab3, tab4, tab5 = st.tabs([t["tab1"], t["tab2"], t["tab3"], t["tab4"], "💰 Payments"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    t["tab1"], t["tab2"], t["tab3"], t["tab4"], 
+    "💰 Payments", "📊 Productivity"  
+])
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1390,3 +1394,35 @@ with tab5:
         - Sheet3 should contain: 'Row Labels' and 'Sum of Amount in local currency'
         - Check that payments_module.py and payments_tab.py are in the same directory
         """)
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TAB 6 · PRODUCTIVITY
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+with tab6:
+    # Detectar columnas
+    col_payer = None
+    col_name = None  
+    col_collector = None
+    col_total = None
+    
+    for col in df.columns:
+        if 'payer' in str(col).lower() and 'name' not in str(col).lower():
+            col_payer = col
+        elif 'name' in str(col).lower() or 'company' in str(col).lower():
+            col_name = col
+        elif 'collector' in str(col).lower():
+            col_collector = col
+        elif 'total' in str(col).lower() and 'ar' in str(col).lower():
+            col_total = col
+    
+    render_productivity_tab(
+        df_merged=st.session_state.get('qa_merged'),
+        df_payments=st.session_state.get('payments_data'),
+        col_collector=col_collector,
+        col_total=col_total
+    )
+```
+
+---
