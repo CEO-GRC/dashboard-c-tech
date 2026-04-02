@@ -1118,8 +1118,8 @@ st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
 # ══════════════════════════════════════════════════════════════════════════════
 # TABS
 # ══════════════════════════════════════════════════════════════════════════════
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    t["tab1"], t["tab2"], t["tab3"], t["tab4"], "Productivity"  
+tab1, tab2, tab3, tab4, tab6 = st.tabs([
+    t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab6"]"Productivity"  
 ])
 
 
